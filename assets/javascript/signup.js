@@ -103,7 +103,7 @@ signupForm.addEventListener('submit', function(event) {
             localStorage.setItem('registeredEmail', email);
             localStorage.setItem('registeredPassword', password);
             setTimeout(() => {
-                 window.location.href = './login.html';
+                 window.location.href = './index.html';
              }, 3000);
         })
         .catch(error => {

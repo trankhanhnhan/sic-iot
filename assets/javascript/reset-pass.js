@@ -105,7 +105,7 @@ document.getElementById('reset-password-form').addEventListener('submit', functi
                         sessionStorage.setItem('resetPasswordEmail', email);
                         sessionStorage.setItem('resetPasswordPassword', password);
                         setTimeout(() => {
-                            window.location.href = './login.html';
+                            window.location.href = './index.html';
                         }, 3000);
                     }).catch((error) => {
                         console.error("Lỗi cập nhật mật khẩu mới:", error);
