@@ -1,36 +1,54 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById('login-form');
-  
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      document.getElementById('loader').style.display = 'none';
-      
-      setTimeout(function() {
-        document.getElementById('loader').style.display = 'flex';
-        document.body.style.overflow = 'auto';
-      }, 1);
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const resetpasswordform = document.getElementById('reset-password-form');
+  const loader = document.getElementById('loader');
 
-      setTimeout(function() {
-        document.getElementById('loader').style.display = 'none';
-        }, 4500);
+  function handleFormSubmit(event, url) {
+    event.preventDefault();
+    loader.style.display = 'flex';
+
+      const formData = new FormData(event.target);
+      const formObject = {};
+      formData.forEach((value, key) => formObject[key] = value);
+  
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formObject)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            window.location.href = data.redirectUrl;
+        } else {
+            loader.style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 1500);
+      });
+  }
+  if (loginForm) {
+    loginForm.addEventListener('submit', function(event) {
+      handleFormSubmit(event, '/login');
     });
-  });
+  }
 
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById('signup-form');
-  
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      document.getElementById('loader').style.display = 'none';
-      
-      setTimeout(function() {
-        document.getElementById('loader').style.display = 'flex';
-        document.body.style.overflow = 'auto';
-      }, 1);
-
-      setTimeout(function() {
-        document.getElementById('loader').style.display = 'none';
-        }, 4500);
+  if (signupForm) {
+    signupForm.addEventListener('submit', function(event) {
+      handleFormSubmit(event, '/signup');
     });
-  });
-  
+  }
+
+  if (resetpasswordform) {
+    resetpasswordform.addEventListener('submit', function(event) {
+      handleFormSubmit(event, '/signup');
+    });
+  }
+});

@@ -13,8 +13,8 @@
 </head>
 <body>
     <!---------------------------------HEADER------------------------------------>
+<div class="grid"> 
     <header class="header">
-        <div class="grid"> 
             <div class="header__navbar">
               <div class="user1">
                 <img src="./assets/img/HCMUTE.png">
@@ -28,11 +28,9 @@
                     <img src="./assets/img/Samsung.jpg">
                   </div>
             </div>
-        </div>
+        
     </header>
     <!---------------------------------CATEGORY------------------------------------>
-    <div class="app__container">
-        <div class="grid">
             <div class="grid__row">
                 <div class="grid__column-2">
                     <nav class="category">
@@ -87,6 +85,21 @@
                 <div class="grid__column-10">
                     <nav class="device__body">
                         <ul class="device-list">
+                            <ul class="status">
+                                <li class="status__list">
+                                    <span class="Sensor">
+                                        <img id="firesensor_node1_id" src="./assets/img/fire.png" alt="img" class="data_img">
+                                        <p>Fire:  <span class="data" id="fire_node1">None</span></p>
+                                    </span>
+                                </li>
+                                <li class="status__list">
+                                    <span class="Sensor">
+                                        <img id="smoke_node1_id" src="./assets/img/smoke.png" alt="img" class="data_img">
+                                       <p>Smoke:  <span class="data" id="smoke_node1">None</span></p>
+                                    </span>
+                                </li>
+                            </ul>
+                        <section>
                             <li>
                                 <span>
                                     <i class="fa-regular fa-droplet"></i>
@@ -94,7 +107,6 @@
                                         <span class="device_status">
                                             Value<span style="color: blue;" id="doamkk">None</span>
                                         </span>
-                                    </span>
                                 </span>
                             </li>
 
@@ -121,7 +133,7 @@
                                             <label for="toggle">
                                               <div class="bulb">
                                                 <span class="bulb-center"></span>
-                                                </span>
+                                                
                                                 <span class="sparks">
                                                   <i class="spark1"></i>
                                                   <i class="spark2"></i>
@@ -148,7 +160,6 @@
                                             <label for="toggle">
                                               <div class="bulb">
                                                 <span class="bulb-center"></span>
-                                                </span>
                                                 <span class="sparks">
                                                   <i class="spark1"></i>
                                                   <i class="spark2"></i>
@@ -161,26 +172,12 @@
                                     </div>
                                 </span>
                             </li>
-                        </ul>
-                        <ul class="status">
-                            <li class="status__list">
-                                <span class="Sensor">
-                                    <img id="firesensor_node1_id" src="./assets/img/fire.png" alt="img" class="data_img">
-                                    <p>Fire:  <span class="data" id="fire_node1">None</span></p>
-                                </span>
-                            </li>
-                            <li class="status__list">
-                                <span class="Sensor">
-                                    <img id="smoke_node1_id" src="./assets/img/smoke.png" alt="img" class="data_img">
-                                   <p>Smoke:  <span class="data" id="smoke_node1">None</span></p>
-                                </span>
-                            </li>
+                        </section>
                         </ul>
                     </nav>      
                 </div>
             </div>
-        </div>
-    </div>
+</div>
     <script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
