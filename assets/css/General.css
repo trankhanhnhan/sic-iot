@@ -145,7 +145,6 @@
 	bottom: 88.7%;
 	border-radius: 50%;
 	transform:translateX(-20px);
-  z-index: 99;
 }
 
 .status__list span span {
