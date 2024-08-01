@@ -100,7 +100,7 @@
                                     </span>
                                 </li>
                             </ul>
-
+            <!---------------------------------CHART------------------------------------>
                             <div class="grid-container">
                                 <div class="grid-item">
                                     <div class="boxdata">
@@ -128,7 +128,7 @@
                 </nav>
             </div>
         </div>
-    <!---------------------------------CHART------------------------------------>
+    <!---------------------------------CHART SCRIPT------------------------------------>
     <script>
         const temperatureChartCanvas = document.getElementById('nhietdo_Chart').getContext('2d');
         const humidityChartCanvas = document.getElementById('doamkk_Chart').getContext('2d');
@@ -238,20 +238,8 @@
                 }
             }
         });
-
     </script>
-    <!---------------------------------MENU PLUS------------------------------------>
-    <script>
-        document.getElementById('menu-icon').addEventListener('click', function() {
-        var dropdownMenu = document.getElementById('dropdown-menu');
-        if (dropdownMenu.style.display === 'block') {
-            dropdownMenu.style.display = 'none';
-        } else {
-            dropdownMenu.style.display = 'block';
-        }
-        });
 
-    </script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>

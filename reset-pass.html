@@ -8,6 +8,12 @@
     <title>Reset Password</title>
 </head>
 <body>
+    <!---------------------------------DOTS LOADER------------------------------------>
+    <div id="loader" class="dots-container" style="display: none;">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
      <!---------------------------------RESET FORM------------------------------------>
     <div class="form-container">
         <div class="box">
@@ -61,7 +67,7 @@
                               </div>
             </form>
         </div>
-        </div>
+    </div>
 
     <!---------------------------------TOAST MESSAGE------------------------------------>
     <div id="toast"></div>
@@ -92,7 +98,6 @@
               duration: 5000
           });
       }
-     
   </script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
