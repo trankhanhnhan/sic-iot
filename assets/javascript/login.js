@@ -104,7 +104,7 @@ loginForm.addEventListener('submit', function (event) {
             }).then(() => {
                 showSuccessToast("Login successful!");
                 setTimeout(() => {
-                    window.location.href = './Home.html'; // Change to your home page
+                    window.location.href = './Home.html';
                 }, 3000);
             }).catch((error) => {
                 showErrorToast("Failed to log login time. Please try again.");
