@@ -1,29 +1,29 @@
 /*---------------CLOCK---------------------------*/
 section{
   position: absolute;
-  top: 20%;
+  top: 15%;
 	width: 100%;
-  height: 50%;
+  height: 450px;
 	display: flex;
+  flex-direction: column; 
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 	background: var(--primary-background-color);
 }
 			
-.body__clock{
+.body__clock, .body__date{
   display: flex;
-  position: absolute;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 50%;
   width: 60%;
   background: var(--primary-background-color);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-
+  margin-bottom: 25px;
 }
 
-.time{
+.time, .date{
   display: flex;
   align-items: center;
   justify-content: center;
