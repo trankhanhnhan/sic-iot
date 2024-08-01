@@ -29,7 +29,7 @@ const firebaseConfig = {
       console.log("khí gas: " + gas);
     });
     
- //----------------CONNECT LIGHT TO FIREBASE-----------------
+//----------------CONNECT LIGHT TO FIREBASE-----------------
 firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
   if (snapshot.exists()) {
       console.log(snapshot.val());
@@ -40,6 +40,7 @@ firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
       if (lightInput && textLight) {
           lightInput.checked = (lightStatus === "ON");
           textLight.textContent = lightStatus;
+          textLight.style.color = (lightStatus === "ON") ? "red" : "black";
       }
   } else {
       console.log("No data available for light!");
@@ -57,6 +58,7 @@ if (lightInput) {
       var textLight = document.getElementById("textlight");
       if (textLight) {
           textLight.textContent = lightState;
+          textLight.style.color = (lightState === "ON") ? "red" : "black";
       }
   });
 }
@@ -72,6 +74,7 @@ firebase.database().ref("/LivingRoom/fan").on("value", function(snapshot) {
       if (fanInput && textFan) {
           fanInput.checked = (fanStatus === "ON");
           textFan.textContent = fanStatus;
+          textFan.style.color = (fanStatus === "ON") ? "red" : "black";
       }
   } else {
       console.log("No data available for fan!");
@@ -89,6 +92,7 @@ if (fanInput) {
       var textFan = document.getElementById("textfan");
       if (textFan) {
           textFan.textContent = fanState;
+          textFan.style.color = (fanState === "ON") ? "red" : "black";
       }
   });
 }
