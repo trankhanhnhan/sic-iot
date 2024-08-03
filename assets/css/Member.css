@@ -28,6 +28,10 @@
     color: #333;
   }
 
+  .avatar-name:nth-child(3) {
+    color: red;
+  }
+
 .avatar-wrapper{
   display: flex;
   flex-direction: column;
