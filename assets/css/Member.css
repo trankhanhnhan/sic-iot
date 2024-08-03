@@ -1,0 +1,42 @@
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 100px 100px;
+  }
+
+  .avatar-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    margin-left: 100px;
+  }
+
+  .avatar {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    margin: 0 10px;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-name {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    position: absolute ;
+    left: 40px;
+}
+
+.avatar-wrapper{
+  position: relative;
+}
