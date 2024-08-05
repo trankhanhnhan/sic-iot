@@ -54,9 +54,9 @@ body {
   
 
 .grid {
-    width: calc(100%-20px);
-    height: 100%;
-
+    width: 1350px;
+    height: 640px;
+    position: relative;
 }
 
 .grid__full-width {
@@ -65,7 +65,7 @@ body {
 
 .grid__row {
   position: relative;
-  top: 15%;
+  top: 1%;
   display: flex;
   flex-wrap: wrap;
   margin-left: 20px;
@@ -75,18 +75,21 @@ body {
 }
 
 .grid__column-2 {
+    position: relative;
     padding-left: 12px;
     padding-right: 12px;
     width: 16.6667%;
     height: 100%;
+    background: none;
 }
 
 .grid__column-10 {
-    padding-left: 30px;
+    position: relative;
+    left: 30px;
     padding-right: 12px;
     height: 100%;
     width: 79%;
-    
+    background: none;
 }
 
 /* Animation */
