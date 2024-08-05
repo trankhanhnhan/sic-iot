@@ -174,9 +174,12 @@
   text-align: center;
   align-items: center;
   justify-content: center;
+  background: var(--primary-background-item-color);
   height: 9%;
 	font-size: 1.8rem;
 	border-bottom: 1px solid rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 6px -1px rgba(0,0,0,0.15),
+				-4px -4px 6px -1px var(--primary-shadow-color);
 	border-radius: 4px;
 }
 

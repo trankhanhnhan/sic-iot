@@ -7,6 +7,7 @@
 
 body > div {
     margin: auto;
+
   }
 
 html {
@@ -54,9 +55,9 @@ body {
   
 
 .grid {
-    width: 1350px;
-    height: 640px;
-    position: relative;
+  width: 1350px;
+  height: 640px;
+  position: relative;
 }
 
 .grid__full-width {
