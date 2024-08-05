@@ -70,4 +70,8 @@
     font-weight: 500;
     color: #333;
   }
+
+  .avatar-wrapper {
+    flex-direction: row;
+  }
 }
