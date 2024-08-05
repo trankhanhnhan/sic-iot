@@ -554,7 +554,7 @@
     }
   }
 
-  @media (width < 600px){
+  @media (width < 1081px){
     .header {
       position: relative;
       width: 590px;
