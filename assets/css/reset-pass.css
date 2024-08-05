@@ -179,6 +179,43 @@ html {
     color: red;
   }
 
+  .back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3em;
+    width: 90px;
+    background-color: #eeeeee4b;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    background: #1163ff;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    bottom: -10%;
+  }
+
+  .back > svg {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    fill: #fff;
+    transition: all 0.4s ease-in;
+   }
+   
+   .back:hover > svg {
+    font-size: 1.2em;
+    transform: translateX(-5px);
+   }
+   
+   .back:hover {
+   background-color: #111;
+   }
+
   /* ======= Toast message ======== */
   
   #toast {

@@ -59,30 +59,29 @@ function toast({ title = "", message = "", type = "success", duration = 3000 }) 
 document.getElementById('reset-password-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        showErrorToast("Người dùng chưa đăng nhập.");
+        return;
+    }
+
+    const oldPassword = document.getElementById('old-password').value;
+    const newPassword = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
-    const emailErrorMessage = document.getElementById('email-error-message');
     const ErrorMessage = document.getElementById('error-message');
     const passwordErrorMessage = document.getElementById('password-error-message');
 
-    emailErrorMessage.textContent = '';
     ErrorMessage.textContent = '';
     passwordErrorMessage.textContent = '';
 
     let isValid = true;
 
-    if (!email) {
-        emailErrorMessage.textContent = "Vui lòng nhập email.";
-        isValid = false;
-    }
-
-    if (password.length < 6) {
+    if (newPassword.length < 6) {
         passwordErrorMessage.textContent = "Mật khẩu phải có ít nhất 6 ký tự.";
         isValid = false;
     }
 
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
         passwordErrorMessage.textContent = "Mật khẩu và xác nhận mật khẩu không khớp.";
         isValid = false;
     }
@@ -91,75 +90,60 @@ document.getElementById('reset-password-form').addEventListener('submit', functi
         return;
     }
 
-//-------Check if the email exists in the system or not------
-    firebase.auth().fetchSignInMethodsForEmail(email)
-        .then((signInMethods) => {
-            if (signInMethods.length === 0) {
-                showErrorEmailToast();
-            } else {
-                const user = firebase.auth().currentUser;
-
-                if (user) {
-                    user.updatePassword(password).then(() => {
-                        showSuccessToast();
-                        sessionStorage.setItem('resetPasswordEmail', email);
-                        sessionStorage.setItem('resetPasswordPassword', password);
-                        setTimeout(() => {
-                            window.location.href = './index.html';
-                        }, 3000);
-                    }).catch((error) => {
-                        console.error("Lỗi cập nhật mật khẩu mới:", error);
-                        showErrorToast(error.message);
-                    });
-                } else {
-                    firebase.auth().signInWithEmailAndPassword(email, password)
-                        .then(() => {
-                            const user = firebase.auth().currentUser;
-                            return user.updatePassword(password);
-                        })
-                        .catch((error) => {
-                            console.error("Lỗi đăng nhập và cập nhật mật khẩu mới:", error);
-                            showErrorToast(error.message);
-                        });
-                }
-            }
-        })
-        .catch((error) => {
-            console.error("Lỗi kiểm tra phương thức đăng nhập:", error);
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
+    
+    user.reauthenticateWithCredential(credential).then(() => {
+        user.updatePassword(newPassword).then(() => {
+            showSuccessToast();
+            setTimeout(() => {
+                window.location.href = './index.html';
+            }, 3000);
+        }).catch((error) => {
+            console.error("Lỗi cập nhật mật khẩu mới:", error);
             showErrorToast(error.message);
         });
+    }).catch((error) => {
+        console.error("Lỗi xác thực lại:", error);
+        showErrorToast("Current password is incorrect.");
+    });
 });
+
 //-----------------AUTO-FILL----------------------
 window.onload = function() {
     const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const savedEmail = sessionStorage.getItem('resetPasswordEmail');
-    const savedPassword = sessionStorage.getItem('resetPasswordPassword');
-    if (savedEmail && savedPassword) {
-        emailInput.value = savedEmail;
-        passwordInput.value = savedPassword;
-        sessionStorage.removeItem('resetPasswordEmail');
-        sessionStorage.removeItem('resetPasswordPassword');
+    const user = firebase.auth().currentUser;
+    if (user) {
+        emailInput.value = user.email;
     }
 };
 
 //-----------------EYE PASSWORD----------------------
+const togglePassword0 = document.getElementById('toggleIcon0');
 const togglePassword1 = document.getElementById('toggleIcon1');
 const togglePassword2 = document.getElementById('toggleIcon2');
 const passwordInput = document.getElementById('password');
-const comfirmpasswordInput = document.getElementById('confirm-password');
+const confirmPasswordInput = document.getElementById('confirm-password');
+const oldPasswordInput = document.getElementById('old-password');
+
+togglePassword0.addEventListener('click', function () {
+    const type = oldPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    oldPasswordInput.setAttribute('type', type);
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+});
 
 togglePassword1.addEventListener('click', function () {
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
     passwordInput.setAttribute('type', type);
     this.classList.toggle('fa-eye');
     this.classList.toggle('fa-eye-slash');
+});
 
-  });
 togglePassword2.addEventListener('click', function () {
-  const type = comfirmpasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  comfirmpasswordInput.setAttribute('type', type);
+    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPasswordInput.setAttribute('type', type);
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+});
 
-  this.classList.toggle('fa-eye');
-  this.classList.toggle('fa-eye-slash');
-  });
+
