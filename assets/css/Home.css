@@ -108,3 +108,45 @@ section div span {
   padding-top: 12px;
   padding-left: 4px;
 }
+
+@media (width < 500px){
+  /*---------------CLOCK---------------------------*/
+section{
+  top: 10%;
+  height: 350px;
+}
+
+.body-general {
+  width: 95%;
+  height: 100%;
+}
+
+.time-text{
+  height: 55px;
+  width: 55px;
+}
+
+.time-text,
+.colon{
+	font-size: 14px;
+}
+
+.colon{
+	font-size: 20px;
+}
+
+.text{
+	font-size: 10px;
+}
+
+section div span {
+  font-size: 14px;
+}
+.am_pm{
+  height: 40%;
+  width: 40%;
+  font-size: 13px;
+  padding-top: 8px;
+  padding-left: 4px;
+}
+}
