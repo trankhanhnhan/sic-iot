@@ -151,32 +151,32 @@ section{
 @media (width < 500px){
 	/*---------------DEVICE__SENSOR---------------------------*/
 .device-list section li {
-	width: 30%;
+	width: 40%;
 	height: 47%;
 }
 
 .device-list section li:nth-child(1) {
     position: absolute;
-    right: 18%;
+    right: 8%;
 	top: 2%;
 }
 
 .device-list section  li:nth-child(2) {
     position: absolute;
-	left: 19%;
+	left: 9%;
 	top: 2%;
 }
 
 .device-list section  li:nth-child(3) {
     position: absolute;
-    right: 18%;
+    right: 8%;
 	top: 55%;
 
 }
 
 .device-list section  li:nth-child(4) {
     position: absolute;
-	left: 19%;
+	left: 9%;
 	top: 55%;
 }
 
@@ -186,7 +186,7 @@ section{
 
 .device_status{
 	font-size: 12px;
-	padding-top: 0;
+	padding-top: 1.5px;
 }
 
 /*---------------DEVICE__SENSOR ID---------------------------*/
