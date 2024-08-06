@@ -152,7 +152,7 @@ section{
 	/*---------------DEVICE__SENSOR---------------------------*/
 .device-list section li {
 	width: 30%;
-	height: 43%;
+	height: 47%;
 }
 
 .device-list section li:nth-child(1) {
@@ -170,14 +170,14 @@ section{
 .device-list section  li:nth-child(3) {
     position: absolute;
     right: 18%;
-	top: 52%;
+	top: 55%;
 
 }
 
 .device-list section  li:nth-child(4) {
     position: absolute;
 	left: 19%;
-	top: 52%;
+	top: 55%;
 }
 
 .device_name{
