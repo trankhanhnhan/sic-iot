@@ -186,6 +186,7 @@ section{
 
 .device_status{
 	font-size: 12px;
+	padding-top: 0;
 }
 
 /*---------------DEVICE__SENSOR ID---------------------------*/
