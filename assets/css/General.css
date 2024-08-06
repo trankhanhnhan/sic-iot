@@ -604,8 +604,9 @@
     }
 
     .status__list span p {
+      position: relative;
       margin-top: 0;
-      top: 0;
+      top: -5px;
       font-size: 10px;
     }
     /*-----------------------CATEGORY------------------------------*/
