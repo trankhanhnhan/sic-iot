@@ -158,13 +158,13 @@ section{
 .device-list section li:nth-child(1) {
     position: absolute;
     right: 8%;
-	top: 2%;
+	top: 5%;
 }
 
 .device-list section  li:nth-child(2) {
     position: absolute;
 	left: 9%;
-	top: 2%;
+	top: 5%;
 }
 
 .device-list section  li:nth-child(3) {
