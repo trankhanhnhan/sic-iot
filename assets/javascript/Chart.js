@@ -145,15 +145,33 @@ function updateDataAndSaveToLocalStorage() {
 getDataFromLocalStorage();
 
 //-------------------AUTO LOAD SENSOR-------------------------
-firebase.database().ref("/LivingRoom/smoke").on("value",function(snapshot){
-  var smk = snapshot.val();  
-  document.getElementById("smoke_node1").innerHTML = smk;
+firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
+  var smk = snapshot.val();
+  var smokeStatus = document.getElementById("smoke_node1");
+  
+  if (smk === "ON") {
+    smokeStatus.innerHTML = "DETECTED";
+    smokeStatus.style.color = "red";
+  } else {
+    smokeStatus.innerHTML = "NOT DETECTED";
+    smokeStatus.style.color = "black";
+  }
+  
   console.log("khói: " + smk);
 });
 
-firebase.database().ref("/LivingRoom/fire").on("value",function(snapshot){
-  var fire = snapshot.val();  
-  document.getElementById("fire_node1").innerHTML = fire;
+firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
+  var fire = snapshot.val();
+  var fireStatus = document.getElementById("fire_node1");
+  
+  if (fire === "ON") {
+    fireStatus.innerHTML = "DETECTED";
+    fireStatus.style.color = "red";
+  } else {
+    fireStatus.innerHTML = "NOT DETECTED";
+    fireStatus.style.color = "black";
+  }
+  
   console.log("lửa: " + fire);
 });
 
