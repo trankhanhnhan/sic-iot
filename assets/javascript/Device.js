@@ -28,6 +28,18 @@ const firebaseConfig = {
       document.getElementById("khigas").innerHTML = gas;
       console.log("khí gas: " + gas);
     });
+
+    firebase.database().ref("/LivingRoom/smoke").on("value",function(snapshot){
+      var smk = snapshot.val();  
+      document.getElementById("smoke_node1").innerHTML = smk;
+      console.log("khói: " + smk);
+    });
+
+    firebase.database().ref("/LivingRoom/fire").on("value",function(snapshot){
+      var fire = snapshot.val();  
+      document.getElementById("fire_node1").innerHTML = fire;
+      console.log("lửa: " + fire);
+    });
     
 //----------------CONNECT LIGHT TO FIREBASE-----------------
 firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
