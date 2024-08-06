@@ -145,6 +145,18 @@ function updateDataAndSaveToLocalStorage() {
 getDataFromLocalStorage();
 
 //-------------------AUTO LOAD SENSOR-------------------------
+firebase.database().ref("/LivingRoom/smoke").on("value",function(snapshot){
+  var smk = snapshot.val();  
+  document.getElementById("smoke_node1").innerHTML = smk;
+  console.log("khói: " + smk);
+});
+
+firebase.database().ref("/LivingRoom/fire").on("value",function(snapshot){
+  var fire = snapshot.val();  
+  document.getElementById("fire_node1").innerHTML = fire;
+  console.log("lửa: " + fire);
+});
+
 firebase.database().ref("/LivingRoom/nhietdo").on("value", function(snapshot) {
   var nd = snapshot.val();
   if (nd !== null) {
