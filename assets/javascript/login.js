@@ -99,7 +99,7 @@ loginForm.addEventListener('submit', function (event) {
         const uid = userCredential.user.uid;
 
         if (userCredential.user.emailVerified) {
-            firebase.database().ref("/KLTN/logins/user/" + uid).set({
+            firebase.database().ref(`/KLTN/logins/user/${uid}`).set({
                 loginTime: loginTime
             }).then(() => {
                 showSuccessToast("Login successful!");
