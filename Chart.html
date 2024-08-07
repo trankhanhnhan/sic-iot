@@ -124,12 +124,12 @@
                                 </div>
                             </div>
 
-                            <div class="grid-item">
+                            <!-- <div class="grid-item">
                                 <div class="boxdata">
                                     <p class="sensor">Gas: <span class="data" id="khigas">None</span></p>
                                     <canvas id="gas_Chart" class="chart"></canvas>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </ul>
             </div>
@@ -140,7 +140,7 @@
     <script>
         const temperatureChartCanvas = document.getElementById('nhietdo_Chart').getContext('2d');
         const humidityChartCanvas = document.getElementById('doamkk_Chart').getContext('2d');
-        const gasChartCanvas = document.getElementById('gas_Chart').getContext('2d');
+        // const gasChartCanvas = document.getElementById('gas_Chart').getContext('2d');
         // --------------------------TIME LABLES-----------------------------------------------
         const timeLabels = [];
         for (let i = 0; i < 10; i++) {
@@ -214,38 +214,38 @@
             }
         });
 
-        new Chart(gasChartCanvas, {
-            type: 'line',
-            data: {
-                labels: timeLabels,
-                datasets: [{
-                    label: 'Gas',
-                    data: khigas,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 10
-                            }
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            font: {
-                                size: 10
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // new Chart(gasChartCanvas, {
+        //     type: 'line',
+        //     data: {
+        //         labels: timeLabels,
+        //         datasets: [{
+        //             label: 'Gas',
+        //             data: khigas,
+        //             borderColor: 'rgba(255, 99, 132, 1)',
+        //             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        //             fill: true
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         scales: {
+        //             x: {
+        //                 ticks: {
+        //                     font: {
+        //                         size: 10
+        //                     }
+        //                 }
+        //             },
+        //             y: {
+        //                 ticks: {
+        //                     font: {
+        //                         size: 10
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>

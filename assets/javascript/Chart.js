@@ -90,40 +90,40 @@ let humichart = new Chart(humidityChartCanvas, {
   }
 });
 
-let gaschart = new Chart(gasChartCanvas, {
-  type: 'line',
-  data: {
-    labels: initialLabels,
-    datasets: [{
-      label: 'CO2',
-      data: khigas,
-      borderColor: 'orange',
-      backgroundColor: 'rgba(250, 232, 198, 0.8)',
-      fill: true
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      x: {
-        ticks: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      y: {
-        ticks: {
-          font: {
-            size: 14
-          },
-          maxTicksLimit: 6,
-          stepSize: 1
-        }
-      }
-    }
-  }
-});
+// let gaschart = new Chart(gasChartCanvas, {
+//   type: 'line',
+//   data: {
+//     labels: initialLabels,
+//     datasets: [{
+//       label: 'CO2',
+//       data: khigas,
+//       borderColor: 'orange',
+//       backgroundColor: 'rgba(250, 232, 198, 0.8)',
+//       fill: true
+//     }]
+//   },
+//   options: {
+//     responsive: true,
+//     scales: {
+//       x: {
+//         ticks: {
+//           font: {
+//             size: 14
+//           }
+//         }
+//       },
+//       y: {
+//         ticks: {
+//           font: {
+//             size: 14
+//           },
+//           maxTicksLimit: 6,
+//           stepSize: 1
+//         }
+//       }
+//     }
+//   }
+// });
 
 //---------------LOCAL STORAGE------------------
 function saveDataToLocalStorage() {
