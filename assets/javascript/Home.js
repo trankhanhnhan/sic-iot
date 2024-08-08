@@ -116,3 +116,7 @@ function checkFireAndSmokeStatus() {
         updateSoundStatus('OFF');
     }
 }
+document.addEventListener('touchend', function() {
+    // Call this function to make sure sound can be played after user interaction
+    checkFireAndSmokeStatus();
+}, { once: true });
