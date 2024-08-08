@@ -84,3 +84,9 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
         }
     }
 });
+
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        checkFireAndSmokeStatus();
+    }
+});
