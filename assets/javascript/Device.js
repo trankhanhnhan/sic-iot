@@ -103,37 +103,37 @@ if (lightInput) {
 }
 
 //----------------CONNECT FAN TO FIREBASE-----------------
-firebase.database().ref("/LivingRoom/fan").on("value", function(snapshot) {
+firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
   if (snapshot.exists()) {
       console.log(snapshot.val());
-      var fanStatus = snapshot.val();
-      var fanInput = document.getElementById("fan");
-      var textFan = document.getElementById("textfan");
+      var fireAlarmStatus = snapshot.val();
+      var fireAlarmInput = document.getElementById("fireAlarm");
+      var textfireAlarm = document.getElementById("textfireAlarm");
       var fireAlarm = document.getElementById("firealarm");
 
-      if (fanInput && textFan) {
-          fanInput.checked = (fanStatus === "ON");
-          textFan.textContent = fanStatus;
-          textFan.style.color = (fanStatus === "ON") ? "red" : "black";
-          fireAlarm.style.color = (fanStatus === "ON") ? "red" : "#6a7076";
+      if (fireAlarmInput && textfireAlarm) {
+          fireAlarmInput.checked = (fireAlarmStatus === "ON");
+          textfireAlarm.textContent = fireAlarmStatus;
+          textfireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "black";
+          fireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "#6a7076";
       }
   } else {
-      console.log("No data available for fan!");
+      console.log("No data available for fireAlarm!");
   }
 });
 
-//-----------------CONTROL FAN FROM THE WEB----------------------
-var fanInput = document.getElementById('fan');
-if (fanInput) {
-  fanInput.addEventListener('change', function() {
-      var fanState = this.checked ? "ON" : "OFF";
+//-----------------CONTROL fireAlarm FROM THE WEB----------------------
+var fireAlarmInput = document.getElementById('fireAlarm');
+if (fireAlarmInput) {
+  fireAlarmInput.addEventListener('change', function() {
+      var fireAlarmState = this.checked ? "ON" : "OFF";
       firebase.database().ref("/LivingRoom").update({
-          "fan": fanState
+          "fireAlarm": fireAlarmState
       });
-      var textFan = document.getElementById("textfan");
-      if (textFan) {
-          textFan.textContent = fanState;
-          textFan.style.color = (fanState === "ON") ? "red" : "black";
+      var textfireAlarm = document.getElementById("textfireAlarm");
+      if (textfireAlarm) {
+          textfireAlarm.textContent = fireAlarmState;
+          textfireAlarm.style.color = (fireAlarmState === "ON") ? "red" : "black";
       }
   });
 }
