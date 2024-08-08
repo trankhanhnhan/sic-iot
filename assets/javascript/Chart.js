@@ -145,34 +145,79 @@ function updateDataAndSaveToLocalStorage() {
 getDataFromLocalStorage();
 
 //-------------------AUTO LOAD SENSOR-------------------------
+var fireStatus = "OFF";
+var smokeStatus = "OFF";
+
+function checkFireAndSmokeStatus() {
+    const alarmSound = document.getElementById('alarmSound');
+
+    if (fireStatus === "ON" || smokeStatus === "ON") {
+        if (alarmSound.paused) {
+            alarmSound.play();
+        }
+    } else {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }
+}
+
 firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
-  var smk = snapshot.val();
-  var smokeStatus = document.getElementById("smoke_node1");
-  
-  if (smk === "ON") {
-    smokeStatus.innerHTML = "DETECTED";
-    smokeStatus.style.color = "red";
-  } else {
-    smokeStatus.innerHTML = "NOT DETECTED";
-    smokeStatus.style.color = "black";
-  }
-  
-  console.log("khói: " + smk);
+    var smk = snapshot.val();
+    var smokeStatusElem = document.getElementById("smoke_node1");
+    var smokeNode1 = document.getElementById("smoke_node1_id");
+
+    if (smk === "ON") {
+        smokeStatusElem.innerHTML = "DETECTED";
+        smokeStatusElem.style.color = "red";
+        smokeNode1.classList.add("zooming2");
+        smokeStatus = "ON";
+    } else {
+        smokeStatusElem.innerHTML = "NOT DETECTED";
+        smokeStatusElem.style.color = "black";
+        smokeNode1.classList.remove("zooming2");
+        smokeStatus = "OFF";
+    }
+
+    console.log("khói: " + smk);
+    checkFireAndSmokeStatus();
 });
 
 firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
-  var fire = snapshot.val();
-  var fireStatus = document.getElementById("fire_node1");
-  
-  if (fire === "ON") {
-    fireStatus.innerHTML = "DETECTED";
-    fireStatus.style.color = "red";
-  } else {
-    fireStatus.innerHTML = "NOT DETECTED";
-    fireStatus.style.color = "black";
+    var fire = snapshot.val();
+    var fireStatusElem = document.getElementById("fire_node1");
+    var fireNode1 = document.getElementById("firesensor_node1_id");
+
+    if (fire === "ON") {
+        fireStatusElem.innerHTML = "DETECTED";
+        fireStatusElem.style.color = "red";
+        fireNode1.classList.add("zooming1");
+        fireStatus = "ON";  
+    } else {
+        fireStatusElem.innerHTML = "NOT DETECTED";
+        fireStatusElem.style.color = "black";
+        fireNode1.classList.remove("zooming1");
+        fireStatus = "OFF";
+
+    console.log("lửa: " + fire);
+    checkFireAndSmokeStatus();
   }
-  
-  console.log("lửa: " + fire);
+});
+
+const alarmSound = document.getElementById('alarmSound');
+
+firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
+    if (snapshot.exists()) {
+        const fireAlarmStatus = snapshot.val();
+        
+        if (fireAlarmStatus === "ON") {
+            if (alarmSound.paused) {
+                alarmSound.play().catch(error => console.error('Error playing sound:', error));
+            }
+        } else {
+            alarmSound.pause();
+            alarmSound.currentTime = 0;
+        }
+    }
 });
 
 firebase.database().ref("/LivingRoom/nhietdo").on("value", function(snapshot) {

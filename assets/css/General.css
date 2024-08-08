@@ -554,6 +554,24 @@
     }
   }
 
+  @keyframes zoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.zooming1 {
+    animation: zoom 1s infinite;
+	left: 23%;
+}
+.zooming2 {
+    animation: zoom 1s infinite;
+	left: 73%;
+}
+
   @media (width < 500px){
     .header {
       position: relative;

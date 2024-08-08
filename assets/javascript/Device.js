@@ -29,84 +29,26 @@ const firebaseConfig = {
       console.log("khí gas: " + gas);
     });
 
-    firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
-      var smk = snapshot.val();
-      var smokeStatus = document.getElementById("smoke_node1");
-      var smokeNode1 = document.getElementById("smoke_node1_id");
-      
-      if (smk === "ON") {
-        smokeStatus.innerHTML = "DETECTED";
-        smokeStatus.style.color = "red";
-        smokeNode1.classList.add("zooming2");
-      } else {
-        smokeStatus.innerHTML = "NOT DETECTED";
-        smokeStatus.style.color = "black";
-        smokeNode1.classList.remove("zooming2");
-      }
-      
-      console.log("khói: " + smk);
-    });
-    
-    firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
-      var fire = snapshot.val();
-      var fireStatus = document.getElementById("fire_node1");
-      var fireNode1 = document.getElementById("firesensor_node1_id");
-      
-      if (fire === "ON") {
-        fireStatus.innerHTML = "DETECTED";
-        fireStatus.style.color = "red";
-        fireNode1.classList.add("zooming1");
-      } else {
-        fireStatus.innerHTML = "NOT DETECTED";
-        fireStatus.style.color = "black";
-        fireNode1.classList.remove("zooming1");
-      }
-      
-      console.log("lửa: " + fire);
-    });
-    
-//----------------CONNECT LIGHT TO FIREBASE-----------------
-firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
-  if (snapshot.exists()) {
-      console.log(snapshot.val());
-      var lightStatus = snapshot.val();
-      var lightInput = document.getElementById("light");
-      var textLight = document.getElementById("textlight");
-      var theLight = document.getElementById("thelight");
+    var fireStatus = "OFF";
+    var smokeStatus = "OFF";
+    var fireAlarmStatus = "OFF";
 
-      if (lightInput && textLight && theLight) {
-          lightInput.checked = (lightStatus === "ON");
-          textLight.textContent = lightStatus;
-          textLight.style.color = (lightStatus === "ON") ? "red" : "black";
-          theLight.style.color = (lightStatus === "ON") ? "#dbdb0bed" : "#6a7076";
-      }
-  } else {
-      console.log("No data available for light!");
-  }
-});
+function checkFireAndSmokeStatus() {
+    const alarmSound = document.getElementById('alarmSound');
 
-
-//-----------------CONTROL LIGHT FROM THE WEB----------------------
-var lightInput = document.getElementById('light');
-if (lightInput) {
-  lightInput.addEventListener('change', function() {
-      var lightState = this.checked ? "ON" : "OFF";
-      firebase.database().ref("/LivingRoom").update({
-          "light": lightState
-      });
-      var textLight = document.getElementById("textlight");
-      if (textLight) {
-          textLight.textContent = lightState;
-          textLight.style.color = (lightState === "ON") ? "red" : "black";
-      }
-  });
+    if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
+        if (alarmSound.paused) {
+            alarmSound.play().catch(error => console.error('Error playing sound:', error));
+        }
+    } else {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }
 }
 
-//----------------CONNECT FAN TO FIREBASE-----------------
 firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
   if (snapshot.exists()) {
-      console.log(snapshot.val());
-      var fireAlarmStatus = snapshot.val();
+      fireAlarmStatus = snapshot.val();
       var fireAlarmInput = document.getElementById("fireAlarm");
       var textfireAlarm = document.getElementById("textfireAlarm");
       var fireAlarm = document.getElementById("firealarm");
@@ -117,23 +59,115 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
           textfireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "black";
           fireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "#6a7076";
       }
+
+      checkFireAndSmokeStatus();
   } else {
       console.log("No data available for fireAlarm!");
   }
 });
 
-//-----------------CONTROL fireAlarm FROM THE WEB----------------------
-var fireAlarmInput = document.getElementById('fireAlarm');
-if (fireAlarmInput) {
-  fireAlarmInput.addEventListener('change', function() {
-      var fireAlarmState = this.checked ? "ON" : "OFF";
-      firebase.database().ref("/LivingRoom").update({
-          "fireAlarm": fireAlarmState
-      });
-      var textfireAlarm = document.getElementById("textfireAlarm");
-      if (textfireAlarm) {
-          textfireAlarm.textContent = fireAlarmState;
-          textfireAlarm.style.color = (fireAlarmState === "ON") ? "red" : "black";
+document.getElementById("fireAlarm").addEventListener("change", function() {
+  var fireAlarmInput = document.getElementById("fireAlarm");
+
+  if (fireAlarmInput.checked) {
+      firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
+  } else {
+      firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
+      
+      alert("If you turn off Fire Alarm. You will not receive a notification if there is smoke or fire. Please attention!");
+  }
+});
+
+window.addEventListener('load', function() {
+  firebase.database().ref("/LivingRoom/fireAlarm").once('value').then(function(snapshot) {
+      if (snapshot.exists()) {
+          fireAlarmStatus = snapshot.val();
+          checkFireAndSmokeStatus();
       }
+  }).catch(error => console.error('Error fetching fireAlarm status:', error));
+});
+
+firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
+    smokeStatus = snapshot.val();
+    var smokeStatusElem = document.getElementById("smoke_node1");
+    var smokeNode1 = document.getElementById("smoke_node1_id");
+
+    if (smokeStatus === "ON") {
+        smokeStatusElem.innerHTML = "DETECTED";
+        smokeStatusElem.style.color = "red";
+        smokeNode1.classList.add("zooming2");
+    } else {
+        smokeStatusElem.innerHTML = "NOT DETECTED";
+        smokeStatusElem.style.color = "black";
+        smokeNode1.classList.remove("zooming2");
+    }
+
+    console.log("khói: " + smokeStatus);
+    checkFireAndSmokeStatus();
+});
+
+firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
+    fireStatus = snapshot.val();
+    var fireStatusElem = document.getElementById("fire_node1");
+    var fireNode1 = document.getElementById("firesensor_node1_id");
+
+    if (fireStatus === "ON") {
+        fireStatusElem.innerHTML = "DETECTED";
+        fireStatusElem.style.color = "red";
+        fireNode1.classList.add("zooming1");
+    } else {
+        fireStatusElem.innerHTML = "NOT DETECTED";
+        fireStatusElem.style.color = "black";
+        fireNode1.classList.remove("zooming1");
+    }
+
+    console.log("lửa: " + fireStatus);
+    checkFireAndSmokeStatus();
+});
+
+document.getElementById("fireAlarm").addEventListener("change", function() {
+    var fireAlarmInput = document.getElementById("fireAlarm");
+
+    if (fireAlarmInput.checked) {
+        firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
+    } else {
+        firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
+    }
+});
+
+  //----------------CONNECT LIGHT TO FIREBASE-----------------
+  firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
+    if (snapshot.exists()) {
+        console.log(snapshot.val());
+        var lightStatus = snapshot.val();
+        var lightInput = document.getElementById("light");
+        var textLight = document.getElementById("textlight");
+        var theLight = document.getElementById("thelight");
+  
+        if (lightInput && textLight && theLight) {
+            lightInput.checked = (lightStatus === "ON");
+            textLight.textContent = lightStatus;
+            textLight.style.color = (lightStatus === "ON") ? "red" : "black";
+            theLight.style.color = (lightStatus === "ON") ? "#dbdb0bed" : "#6a7076";
+        }
+    } else {
+        console.log("No data available for light!");
+    }
   });
-}
+  
+  
+  //-----------------CONTROL LIGHT FROM THE WEB----------------------
+  var lightInput = document.getElementById('light');
+  if (lightInput) {
+    lightInput.addEventListener('change', function() {
+        var lightState = this.checked ? "ON" : "OFF";
+        firebase.database().ref("/LivingRoom").update({
+            "light": lightState
+        });
+        var textLight = document.getElementById("textlight");
+        if (textLight) {
+            textLight.textContent = lightState;
+            textLight.style.color = (lightState === "ON") ? "red" : "black";
+        }
+    });
+  }
