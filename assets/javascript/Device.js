@@ -37,11 +37,11 @@ const firebaseConfig = {
       if (smk === "ON") {
         smokeStatus.innerHTML = "DETECTED";
         smokeStatus.style.color = "red";
-        smokeNode1.classList.add("zooming");
+        smokeNode1.classList.add("zooming2");
       } else {
         smokeStatus.innerHTML = "NOT DETECTED";
         smokeStatus.style.color = "black";
-        smokeNode1.classList.remove("zooming");
+        smokeNode1.classList.remove("zooming2");
       }
       
       console.log("khói: " + smk);
@@ -55,11 +55,11 @@ const firebaseConfig = {
       if (fire === "ON") {
         fireStatus.innerHTML = "DETECTED";
         fireStatus.style.color = "red";
-        fireNode1.classList.add("zooming");
+        fireNode1.classList.add("zooming1");
       } else {
         fireStatus.innerHTML = "NOT DETECTED";
         fireStatus.style.color = "black";
-        fireNode1.classList.remove("zooming");
+        fireNode1.classList.remove("zooming1");
       }
       
       console.log("lửa: " + fire);
