@@ -85,38 +85,16 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
     }
 });
 
-document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible') {
-        checkFireAndSmokeStatus();
-    }
-});
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const alarSound = new Audio('Alarm.mp3');
+let source = audioContext.createMediaElementSource(alarmSound);
+source.connect(audioContext.destination);
 
-function updateSoundStatus(status) {
-    localStorage.setItem('alarmSoundStatus', status);
-}
-
-function checkStoredSoundStatus() {
-    const status = localStorage.getItem('alarmSoundStatus');
-    if (status === 'ON') {
-        alarmSound.play().catch(error => console.error('Error playing sound:', error));
-    } else {
-        alarmSound.pause();
-        alarmSound.currentTime = 0;
-    }
-}
-
-// Call this function when initializing your page
-checkStoredSoundStatus();
-
-// Update status based on your existing logic
 function checkFireAndSmokeStatus() {
     if (fireStatus === "ON" || smokeStatus === "ON") {
-        updateSoundStatus('ON');
+        alarSound.play().catch(error => console.error('Error playing sound:', error));
     } else {
-        updateSoundStatus('OFF');
+        alarSound.pause();
+        alarSound.currentTime = 0;
     }
 }
-document.addEventListener('touchend', function() {
-    // Call this function to make sure sound can be played after user interaction
-    checkFireAndSmokeStatus();
-}, { once: true });
