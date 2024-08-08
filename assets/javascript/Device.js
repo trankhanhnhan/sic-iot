@@ -171,3 +171,8 @@ document.getElementById("fireAlarm").addEventListener("change", function() {
         }
     });
   }
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        checkFireAndSmokeStatus();
+    }
+});
