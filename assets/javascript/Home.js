@@ -84,17 +84,3 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
         }
     }
 });
-
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const alarSound = new Audio('Alarm.mp3');
-let source = audioContext.createMediaElementSource(alarmSound);
-source.connect(audioContext.destination);
-
-function checkFireAndSmokeStatus() {
-    if (fireStatus === "ON" || smokeStatus === "ON") {
-        alarSound.play().catch(error => console.error('Error playing sound:', error));
-    } else {
-        alarSound.pause();
-        alarSound.currentTime = 0;
-    }
-}
