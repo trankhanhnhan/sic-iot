@@ -7,11 +7,25 @@ const firebaseConfig = {
     messagingSenderId: "1054276103106",
     appId: "1:1054276103106:web:428ec651a347fa0b39045b",
     measurementId: "G-27TGW7MZDB"
-  };
+};
 
 firebase.initializeApp(firebaseConfig);
 
-const alarmSound = document.getElementById('alarmSound');
+let fireStatus = "OFF";
+let smokeStatus = "OFF";
+
+function checkFireAndSmokeStatus() {
+    const alarmSound = document.getElementById('alarmSound');
+
+    if (fireStatus === "ON" || smokeStatus === "ON") {
+        if (alarmSound.paused) {
+            alarmSound.play().catch(error => console.error('Error playing sound:', error));
+        }
+    } else {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }
+}
 
 firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
     if (snapshot.exists()) {
@@ -30,30 +44,16 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
 
 firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
     if (snapshot.exists()) {
-        const fireStatus = snapshot.val();
-
-        if (fireStatus === "ON") {
-            if (alarmSound.paused) {
-                alarmSound.play().catch(error => console.error('Error playing sound:', error));
-            }
-        } else {
-            alarmSound.pause();
-            alarmSound.currentTime = 0;
-        }
+        fireStatus = snapshot.val();
+        console.log("Fire status: " + fireStatus);
+        checkFireAndSmokeStatus();
     }
 });
 
 firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
     if (snapshot.exists()) {
-        const smokeStatus = snapshot.val();
-
-        if (smokeStatus === "ON") {
-            if (alarmSound.paused) {
-                alarmSound.play().catch(error => console.error('Error playing sound:', error));
-            }
-        } else {
-            alarmSound.pause();
-            alarmSound.currentTime = 0;
-        }
+        smokeStatus = snapshot.val();
+        console.log("Smoke status: " + smokeStatus);
+        checkFireAndSmokeStatus();
     }
 });
