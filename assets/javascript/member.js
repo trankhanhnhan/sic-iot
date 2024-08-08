@@ -11,8 +11,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-let fireStatus = "OFF";
-let smokeStatus = "OFF";
+var fireStatus = "OFF";
+var smokeStatus = "OFF";
 
 function checkFireAndSmokeStatus() {
     const alarmSound = document.getElementById('alarmSound');
