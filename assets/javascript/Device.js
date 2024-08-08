@@ -176,3 +176,29 @@ document.getElementById("fireAlarm").addEventListener("change", function() {
         checkFireAndSmokeStatus();
     }
 });
+
+function updateSoundStatus(status) {
+    localStorage.setItem('alarmSoundStatus', status);
+}
+
+function checkStoredSoundStatus() {
+    const status = localStorage.getItem('alarmSoundStatus');
+    if (status === 'ON') {
+        alarmSound.play().catch(error => console.error('Error playing sound:', error));
+    } else {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }
+}
+
+// Call this function when initializing your page
+checkStoredSoundStatus();
+
+// Update status based on your existing logic
+function checkFireAndSmokeStatus() {
+    if (fireStatus === "ON" || smokeStatus === "ON") {
+        updateSoundStatus('ON');
+    } else {
+        updateSoundStatus('OFF');
+    }
+}
