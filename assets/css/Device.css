@@ -169,6 +169,21 @@ section{
 	border-radius: 10px;
 }
 
+@keyframes zoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.zooming {
+    animation: zoom 1s infinite;
+	
+}
+
+
 @media (width < 500px){
 	/*---------------DEVICE__SENSOR---------------------------*/
 .device-list section li {

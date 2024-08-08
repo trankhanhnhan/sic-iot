@@ -32,13 +32,16 @@ const firebaseConfig = {
     firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
       var smk = snapshot.val();
       var smokeStatus = document.getElementById("smoke_node1");
+      var smokeNode1 = document.getElementById("smoke_node1_id");
       
       if (smk === "ON") {
         smokeStatus.innerHTML = "DETECTED";
         smokeStatus.style.color = "red";
+        smokeNode1.classList.add("zooming");
       } else {
         smokeStatus.innerHTML = "NOT DETECTED";
         smokeStatus.style.color = "black";
+        smokeNode1.classList.remove("zooming");
       }
       
       console.log("khói: " + smk);
@@ -47,13 +50,16 @@ const firebaseConfig = {
     firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
       var fire = snapshot.val();
       var fireStatus = document.getElementById("fire_node1");
+      var fireNode1 = document.getElementById("firesensor_node1_id");
       
       if (fire === "ON") {
         fireStatus.innerHTML = "DETECTED";
         fireStatus.style.color = "red";
+        fireNode1.classList.add("zooming");
       } else {
         fireStatus.innerHTML = "NOT DETECTED";
         fireStatus.style.color = "black";
+        fireNode1.classList.remove("zooming");
       }
       
       console.log("lửa: " + fire);
@@ -66,16 +72,19 @@ firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
       var lightStatus = snapshot.val();
       var lightInput = document.getElementById("light");
       var textLight = document.getElementById("textlight");
+      var theLight = document.getElementById("thelight");
 
-      if (lightInput && textLight) {
+      if (lightInput && textLight && theLight) {
           lightInput.checked = (lightStatus === "ON");
           textLight.textContent = lightStatus;
           textLight.style.color = (lightStatus === "ON") ? "red" : "black";
+          theLight.style.color = (lightStatus === "ON") ? "#dbdb0bed" : "#6a7076";
       }
   } else {
       console.log("No data available for light!");
   }
 });
+
 
 //-----------------CONTROL LIGHT FROM THE WEB----------------------
 var lightInput = document.getElementById('light');
@@ -100,11 +109,13 @@ firebase.database().ref("/LivingRoom/fan").on("value", function(snapshot) {
       var fanStatus = snapshot.val();
       var fanInput = document.getElementById("fan");
       var textFan = document.getElementById("textfan");
+      var fireAlarm = document.getElementById("firealarm");
 
       if (fanInput && textFan) {
           fanInput.checked = (fanStatus === "ON");
           textFan.textContent = fanStatus;
           textFan.style.color = (fanStatus === "ON") ? "red" : "black";
+          fireAlarm.style.color = (fanStatus === "ON") ? "red" : "#6a7076";
       }
   } else {
       console.log("No data available for fan!");
