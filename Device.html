@@ -178,7 +178,18 @@
                     </nav>      
                 </div>
             </div>
-</div>
+            <div id="toast2"></div>
+            <div id="overlay" class="overlay"></div>
+<script>
+    function closeToast() {
+    toast({
+        title: "Warning",
+        message: "If you enable this rule, you will trigger a fire alarm!",
+        type: "warning",
+        duration: 3000
+    });
+}
+</script>
     <script type="module" src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>

@@ -9,6 +9,98 @@ const firebaseConfig = {
     measurementId: "G-27TGW7MZDB"
   };
     firebase.initializeApp(firebaseConfig);
+
+    //-----------------TOAST MESSAGE----------------------
+    const toastContainer = document.getElementById('toast2');
+    const overlay = document.getElementById('overlay');
+    let okClickCount = -1;
+    
+    function toast({ title = "", message = "", type = "warning", onConfirm, onConfirm2 }) {
+        const main = toastContainer;
+        if (main) {
+            const toast = document.createElement("div");
+            toast.style.animation = `slideInDown ease .3s`;
+    
+            const icons = {
+                success: "fas fa-check-circle",
+                warning: "fas fa-exclamation-circle",
+                info: "fas fa-info-circle",
+            };
+            const icon = icons[type] || icons.warning;
+    
+            toast.innerHTML = `
+                <div class="toast2 toast2--${type}">
+                    <div class="toast2__icon">
+                        <i class="${icon}"></i>
+                    </div>
+                    <div class="toast2__body">
+                        <h3 class="toast2__title">${title}</h3>
+                        <p class="toast2__msg">${message}</p>
+                    </div>
+                </div>
+                <div class="toast2 toast2--btn">
+                    <div class="toast2--btn btn--close">Cancel</div>
+                    <div class="toast2--btn btn--next">Ok</div>
+                </div>
+            `;
+    
+        // Attach event listeners to buttons
+        toast.querySelector('.btn--next').onclick = () => {
+            okClickCount += 1;
+
+            if (okClickCount === 1) {
+                // Remove current toast and show confirmation toast
+                main.removeChild(toast);
+                    onConfirm();
+            } else if (okClickCount === 2) {
+                // Remove current toast and show success toast
+                main.removeChild(toast);
+                    onConfirm2();
+     
+            } else if (okClickCount === 3) {
+                // Remove current toast and hide overlay
+                main.removeChild(toast);
+                overlay.classList.remove('show');
+                okClickCount = 0; // Reset click count
+            }
+        };
+
+        toast.querySelector('.btn--close').onclick = () => {
+            main.removeChild(toast);
+            okClickCount = 0; // Reset click count on cancel
+            overlay.classList.remove('show'); // Hide the overlay
+        };
+
+        main.appendChild(toast);
+        overlay.classList.add('show'); // Show the overlay
+    }
+}
+
+function closeToast() {
+    toast({
+        title: "Warning",
+        message: "If you enable this rule, you will trigger a fire alarm!",
+        type: "warning",
+        onConfirm: () => {
+            toast({
+                title: "Confirmation",
+                message: "Are you sure you want to enable warnings?",
+                type: "info",
+                onConfirm2: () => {
+                    toast({
+                        title: "Success",
+                        message: "Alerts will be enabled!",
+                        type: "success",
+                        onConfirm2: () => {
+                            console.log("Action confirmed");
+                            overlay.classList.remove('show'); // Hide the overlay after the success toast
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
     
   //-------------------AUTO LOAD SENSOR-------------------------
     firebase.database().ref("/LivingRoom/nhietdo").on("value",function(snapshot){
@@ -67,15 +159,14 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
 });
 
 document.getElementById("fireAlarm").addEventListener("change", function() {
-  var fireAlarmInput = document.getElementById("fireAlarm");
+    var fireAlarmInput = document.getElementById("fireAlarm");
 
-  if (fireAlarmInput.checked) {
-      firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
-  } else {
-      firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
-      
-      alert("If you turn off Fire Alarm. You will not receive a notification if there is smoke or fire. Please attention!");
-  }
+    if (fireAlarmInput.checked) {
+        firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
+     closeToast("");
+    } else {
+        firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
+    }
 });
 
 window.addEventListener('load', function() {
