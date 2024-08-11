@@ -170,10 +170,10 @@ section{
 }
 
 #toast2 {
-	position: fixed;
-	top: 0;
-	right: 31%;
+	position:fixed;
 	z-index: 999999;
+	top: 0;
+	transform:translateX(130%)
 }
 
 .toast2 {

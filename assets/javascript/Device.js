@@ -61,7 +61,7 @@ const firebaseConfig = {
                 // Remove current toast and hide overlay
                 main.removeChild(toast);
                 overlay.classList.remove('show');
-                okClickCount = 0; // Reset click count
+                okClickCount = 0; // Reset click count 
             }
         };
 
@@ -143,7 +143,8 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
       fireAlarmStatus = snapshot.val();
       var fireAlarmInput = document.getElementById("fireAlarm");
       var textfireAlarm = document.getElementById("textfireAlarm");
-      var fireAlarm = document.getElementById("firealarm");
+      var fireAlarm = document.getElementById("fireAlarm");
+      
 
       if (fireAlarmInput && textfireAlarm) {
           fireAlarmInput.checked = (fireAlarmStatus === "ON");
