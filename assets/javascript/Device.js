@@ -43,36 +43,32 @@ const firebaseConfig = {
                     <div class="toast2--btn btn--next">Ok</div>
                 </div>
             `;
-    
-        // Attach event listeners to buttons
+            
         toast.querySelector('.btn--next').onclick = () => {
             okClickCount += 1;
 
             if (okClickCount === 1) {
-                // Remove current toast and show confirmation toast
                 main.removeChild(toast);
                     onConfirm();
             } else if (okClickCount === 2) {
-                // Remove current toast and show success toast
                 main.removeChild(toast);
                     onConfirm2();
      
             } else if (okClickCount === 3) {
-                // Remove current toast and hide overlay
                 main.removeChild(toast);
                 overlay.classList.remove('show');
-                okClickCount = 0; // Reset click count 
+                okClickCount = 0;
             }
         };
 
         toast.querySelector('.btn--close').onclick = () => {
             main.removeChild(toast);
-            okClickCount = 0; // Reset click count on cancel
-            overlay.classList.remove('show'); // Hide the overlay
+            okClickCount = 0;
+            overlay.classList.remove('show');
         };
 
         main.appendChild(toast);
-        overlay.classList.add('show'); // Show the overlay
+        overlay.classList.add('show');
     }
 }
 
