@@ -74,7 +74,7 @@ firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) 
     if (snapshot.exists()) {
         const fireAlarmStatus = snapshot.val();
         
-        if (fireAlarmStatus === "ON") {
+        if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
             if (alarmSound.paused) {
                 alarmSound.play().catch(error => console.error('Error playing sound:', error));
             }

@@ -206,18 +206,18 @@ firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
 const alarmSound = document.getElementById('alarmSound');
 
 firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
-    if (snapshot.exists()) {
-        const fireAlarmStatus = snapshot.val();
-        
-        if (fireAlarmStatus === "ON") {
-            if (alarmSound.paused) {
-                alarmSound.play().catch(error => console.error('Error playing sound:', error));
-            }
-        } else {
-            alarmSound.pause();
-            alarmSound.currentTime = 0;
-        }
-    }
+  if (snapshot.exists()) {
+      const fireAlarmStatus = snapshot.val();
+      
+      if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
+          if (alarmSound.paused) {
+              alarmSound.play().catch(error => console.error('Error playing sound:', error));
+          }
+      } else {
+          alarmSound.pause();
+          alarmSound.currentTime = 0;
+      }
+  }
 });
 
 firebase.database().ref("/LivingRoom/nhietdo").on("value", function(snapshot) {
