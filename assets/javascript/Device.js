@@ -13,7 +13,7 @@ const firebaseConfig = {
     //-----------------TOAST MESSAGE----------------------
     const toastContainer = document.getElementById('toast2');
     const overlay = document.getElementById('overlay');
-    let okClickCount = -1;
+    let okClickCount = 0;
     
     function toast({ title = "", message = "", type = "warning", onConfirm, onConfirm2 }) {
         const main = toastContainer;
@@ -43,7 +43,7 @@ const firebaseConfig = {
                     <div class="toast2--btn btn--next">Ok</div>
                 </div>
             `;
-            
+
         toast.querySelector('.btn--next').onclick = () => {
             okClickCount += 1;
 
