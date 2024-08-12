@@ -17,7 +17,7 @@ var smokeStatus = "OFF";
 function checkFireAndSmokeStatus() {
     const alarmSound = document.getElementById('alarmSound');
 
-    if (fireStatus === "ON" || smokeStatus === "ON") {
+    if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
         if (alarmSound.paused) {
             alarmSound.play().catch(error => console.error('Error playing sound:', error));
         }

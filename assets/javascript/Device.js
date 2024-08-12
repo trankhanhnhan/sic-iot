@@ -58,6 +58,7 @@ const firebaseConfig = {
                 main.removeChild(toast);
                 overlay.classList.remove('show');
                 okClickCount = 0;
+                onConfirm2();
             }
         };
 
@@ -72,6 +73,8 @@ const firebaseConfig = {
     }
 }
 
+let shouldToggleFireAlarm = false;
+
 function closeToast() {
     toast({
         title: "Warning",
@@ -85,11 +88,14 @@ function closeToast() {
                 onConfirm2: () => {
                     toast({
                         title: "Success",
-                        message: "Alerts will be enabled!",
+                        message: "Click OK to enable alerts!",
                         type: "success",
                         onConfirm2: () => {
-                            console.log("Action confirmed");
-                            overlay.classList.remove('show'); // Hide the overlay after the success toast
+                            console.log("Fire alarm activated!");
+                            shouldToggleFireAlarm = true;
+                            document.getElementById("fireAlarm").checked = true;
+                            firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
+                            overlay.classList.remove('show');
                         }
                     });
                 }
@@ -97,7 +103,105 @@ function closeToast() {
         }
     });
 }
+
+document.getElementById("fireAlarm").addEventListener("change", function(event) {
+    const fireAlarmInput = document.getElementById("fireAlarm");
     
+    if (shouldToggleFireAlarm) {
+        shouldToggleFireAlarm = false;
+        firebase.database().ref("/LivingRoom/fireAlarm").set(fireAlarmInput.checked ? "ON" : "OFF");
+    } else if (fireAlarmInput.checked) {
+        event.preventDefault();
+        fireAlarmInput.checked = false;
+        closeToast();
+    } else {
+        firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
+    }
+});
+
+var fireStatus = "OFF";
+var smokeStatus = "OFF";
+var fireAlarmStatus = "OFF";
+
+firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
+    if (snapshot.exists()) {
+        fireAlarmStatus = snapshot.val();
+        var fireAlarmInput = document.getElementById("fireAlarm");
+        var textfireAlarm = document.getElementById("textfireAlarm");
+        var fireAlarm = document.getElementById("firealarm");
+
+        if (fireAlarmInput && textfireAlarm) {
+            fireAlarmInput.checked = (fireAlarmStatus === "ON");
+            textfireAlarm.textContent = fireAlarmStatus;
+            textfireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "black";
+            fireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "#6a7076";
+        }
+
+        checkFireAndSmokeStatus();
+    } else {
+        console.log("Không có dữ liệu về fireAlarm!");
+    }
+});
+    
+window.addEventListener('load', function() {
+firebase.database().ref("/LivingRoom/fireAlarm").once('value').then(function(snapshot) {
+  if (snapshot.exists()) {
+      fireAlarmStatus = snapshot.val();
+      checkFireAndSmokeStatus();
+  }
+}).catch(error => console.error('Error fetching fireAlarm status:', error));
+});
+
+function checkFireAndSmokeStatus() {
+    const alarmSound = document.getElementById('alarmSound');
+
+    if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
+        if (alarmSound.paused) {
+        alarmSound.play().catch(error => console.error('Error playing sound:', error));
+    }
+} else {
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+}
+}
+firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
+    smokeStatus = snapshot.val();
+    var smokeStatusElem = document.getElementById("smoke_node1");
+    var smokeNode1 = document.getElementById("smoke_node1_id");
+
+    if (smokeStatus === "ON") {
+    smokeStatusElem.innerHTML = "DETECTED";
+    smokeStatusElem.style.color = "red";
+    smokeNode1.classList.add("zooming2");
+} else {
+    smokeStatusElem.innerHTML = "NOT DETECTED";
+    smokeStatusElem.style.color = "black";
+    smokeNode1.classList.remove("zooming2");
+}
+
+console.log("khói: " + smokeStatus);
+checkFireAndSmokeStatus();
+});
+
+firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
+fireStatus = snapshot.val();
+var fireStatusElem = document.getElementById("fire_node1");
+var fireNode1 = document.getElementById("firesensor_node1_id");
+
+if (fireStatus === "ON") {
+    fireStatusElem.innerHTML = "DETECTED";
+    fireStatusElem.style.color = "red";
+    fireNode1.classList.add("zooming1");
+} else {
+    fireStatusElem.innerHTML = "NOT DETECTED";
+    fireStatusElem.style.color = "black";
+    fireNode1.classList.remove("zooming1");
+}
+
+console.log("lửa: " + fireStatus);
+checkFireAndSmokeStatus();
+});
+
   //-------------------AUTO LOAD SENSOR-------------------------
     firebase.database().ref("/LivingRoom/nhietdo").on("value",function(snapshot){
       var nd = snapshot.val();  
@@ -117,111 +221,6 @@ function closeToast() {
       console.log("khí gas: " + gas);
     });
 
-    var fireStatus = "OFF";
-    var smokeStatus = "OFF";
-    var fireAlarmStatus = "OFF";
-
-function checkFireAndSmokeStatus() {
-    const alarmSound = document.getElementById('alarmSound');
-
-    if (fireAlarmStatus === "ON" && (fireStatus === "ON" || smokeStatus === "ON")) {
-        if (alarmSound.paused) {
-            alarmSound.play().catch(error => console.error('Error playing sound:', error));
-        }
-    } else {
-        alarmSound.pause();
-        alarmSound.currentTime = 0;
-    }
-}
-
-firebase.database().ref("/LivingRoom/fireAlarm").on("value", function(snapshot) {
-  if (snapshot.exists()) {
-      fireAlarmStatus = snapshot.val();
-      var fireAlarmInput = document.getElementById("fireAlarm");
-      var textfireAlarm = document.getElementById("textfireAlarm");
-      var fireAlarm = document.getElementById("fireAlarm");
-      
-
-      if (fireAlarmInput && textfireAlarm) {
-          fireAlarmInput.checked = (fireAlarmStatus === "ON");
-          textfireAlarm.textContent = fireAlarmStatus;
-          textfireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "black";
-          fireAlarm.style.color = (fireAlarmStatus === "ON") ? "red" : "#6a7076";
-      }
-
-      checkFireAndSmokeStatus();
-  } else {
-      console.log("No data available for fireAlarm!");
-  }
-});
-
-document.getElementById("fireAlarm").addEventListener("change", function() {
-    var fireAlarmInput = document.getElementById("fireAlarm");
-
-    if (fireAlarmInput.checked) {
-        firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
-     closeToast("");
-    } else {
-        firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
-    }
-});
-
-window.addEventListener('load', function() {
-  firebase.database().ref("/LivingRoom/fireAlarm").once('value').then(function(snapshot) {
-      if (snapshot.exists()) {
-          fireAlarmStatus = snapshot.val();
-          checkFireAndSmokeStatus();
-      }
-  }).catch(error => console.error('Error fetching fireAlarm status:', error));
-});
-
-firebase.database().ref("/LivingRoom/smoke").on("value", function(snapshot) {
-    smokeStatus = snapshot.val();
-    var smokeStatusElem = document.getElementById("smoke_node1");
-    var smokeNode1 = document.getElementById("smoke_node1_id");
-
-    if (smokeStatus === "ON") {
-        smokeStatusElem.innerHTML = "DETECTED";
-        smokeStatusElem.style.color = "red";
-        smokeNode1.classList.add("zooming2");
-    } else {
-        smokeStatusElem.innerHTML = "NOT DETECTED";
-        smokeStatusElem.style.color = "black";
-        smokeNode1.classList.remove("zooming2");
-    }
-
-    console.log("khói: " + smokeStatus);
-    checkFireAndSmokeStatus();
-});
-
-firebase.database().ref("/LivingRoom/fire").on("value", function(snapshot) {
-    fireStatus = snapshot.val();
-    var fireStatusElem = document.getElementById("fire_node1");
-    var fireNode1 = document.getElementById("firesensor_node1_id");
-
-    if (fireStatus === "ON") {
-        fireStatusElem.innerHTML = "DETECTED";
-        fireStatusElem.style.color = "red";
-        fireNode1.classList.add("zooming1");
-    } else {
-        fireStatusElem.innerHTML = "NOT DETECTED";
-        fireStatusElem.style.color = "black";
-        fireNode1.classList.remove("zooming1");
-    }
-
-    console.log("lửa: " + fireStatus);
-    checkFireAndSmokeStatus();
-});
-
-document.getElementById("fireAlarm").addEventListener("change", function() {
-    var fireAlarmInput = document.getElementById("fireAlarm");
-
-    if (fireAlarmInput.checked) {
-        firebase.database().ref("/LivingRoom/fireAlarm").set("ON");
-    } else {
-        firebase.database().ref("/LivingRoom/fireAlarm").set("OFF");
-    }
-});
 
   //----------------CONNECT LIGHT TO FIREBASE-----------------
   firebase.database().ref("/LivingRoom/light").on("value", function(snapshot) {
